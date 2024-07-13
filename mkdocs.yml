@@ -6,7 +6,9 @@ site_url: https://imessiy.github.io
 # [Navigation]
 nav:
   - 一生一芯:
+    - ysyx.md
   - 读书笔记:
+    - notes.md
 
 # [UI]
 theme:
