@@ -20,3 +20,11 @@
     </td> </center>
     </tr>
 </table>
+<table>
+    <tr> 
+    <td> <center>
+    <img src="https://pic.imgdb.cn/item/66935898d9c307b7e948279d.png" alt="image.png">
+    <br>D触发器
+    </td> </center>
+    </tr>
+</tabel>
