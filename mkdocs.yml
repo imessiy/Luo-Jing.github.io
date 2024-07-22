@@ -7,6 +7,7 @@ site_url: https://imessiy.github.io
 nav:
   - 一生一芯:
     - YSYX/ysyx.md
+    - PA2: YSYX/PA2.md
   - 读书笔记:
     - NOTES/notes.md
     - Digital Design: NOTES/digital_design.md
