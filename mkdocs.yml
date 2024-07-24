@@ -13,11 +13,12 @@ nav:
     - Digital Design: NOTES/digital_design.md
   - 工具:
     - TOOLS/tools.md
-    - Vim: TOOLS/vim.md
-    - Git: TOOLS/git.md
-    - Markdown: TOOLS/markdown.md
-    - Verilator: TOOLS/verilator.md
-    - Makefile: TOOLS/makefile.md
+    - Vim:        TOOLS/vim.md
+    - Git:        TOOLS/git.md
+    - Markdown:   TOOLS/markdown.md
+    - Verilator:  TOOLS/verilator.md
+    - Makefile:   TOOLS/makefile.md
+    - GDB:        TOOLS/gdb.md
 
 # [UI]
 theme:
