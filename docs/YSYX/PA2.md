@@ -18,15 +18,7 @@
 # 程序，运行时环境与AM
 PA2.2中makefile文件特别值得学习，看懂makefile就能够理解nemu，am-kernels，abstract-machine之间的关系，根据我目前的理解，am-kernels提供一些c文件，也就是客户程序，nemu是模拟的处理器，abstract-machine所做的就是提供客户程序在nemu中运行起来的环境，比如库文件等等。
 
-初次看abstract-machine的Makefile文件时，我只看懂了一些诸如把.c文件编译成.o文件的规则。当我想尝试无脑直接输入`make`时,命令行告诉我没有指定ARCH。于是我再输入`make ARCH=riscv32-nemu`，命令行又告诉我没有SRCS，在这一点我卡了很久，尝试了直接输入`make ARCH=riscv32-nemu SRCS=dummy`,发现没什么用。最后发现是要去am-kernels文件夹下指定客户程序，比如我在`~/ysyx-workbench/am-kern- [RTL实现单周期处理器](#rtl实现单周期处理器)
-- [RTL实现单周期处理器](#rtl实现单周期处理器)
-- [程序，运行时环境与AM](#程序运行时环境与am)
-- [基础设施](#基础设施)
-  - [bug诊断的利器-trace](#bug诊断的利器-trace)
-    - [ftrace](#ftrace)
-  - [AM作为基础设施](#am作为基础设施)
-  - [Differential Testing](#differential-testing)
-  - [一键回归测试](#一键回归测试)
+初次看abstract-machine的Makefile文件时，我只看懂了一些诸如把.c文件编译成.o文件的规则。当我想尝试无脑直接输入`make`时,命令行告诉我没有指定ARCH。于是我再输入`make ARCH=riscv32-nemu`，命令行又告诉我没有SRCS，在这一点我卡了很久，尝试了直接输入`make ARCH=riscv32-nemu SRCS=dummy`,发现没什么用。最后发现是要去am-kernels文件夹下指定客户程序，比如我在`~/ysyx-workbench/am-kernels/kernels/hello`目录下`make`
 ```
 # Building hello-image [riscv32-nemu]
 + CC hello.c
@@ -83,10 +75,25 @@ elf文件的解析以及函数名匹配都写在了`nemu/utils/trace.c`中
 make ALL=string ARCH=native run
 ```
 当我执行上述命令时有很多报错，我也卡了很久。
-1. 在string.c中自己实现了一个strnlen的库函数，但是编译运行的时候会报错与<string.h>中的strnlen函数冲突。所以我只能删了这个函数，但是其它自定义的库函数为什么不会冲突，我暂时还没有理清楚
-2. malloc函数的实现有问题，后来参考了网上别人写的，发现他写的时候有注意地址对齐
+
+- 1. 在string.c中自己实现了一个strnlen的库函数，但是编译运行的时候会报错与<string.h>中的strnlen函数冲突。所以我只能删了这个函数，但是其它自定义的库函数为什么不会冲突，我暂时还没有理清楚
+- 2. malloc函数的实现有问题，后来参考了网上别人写的，发现他写的时候有注意地址对齐
 
 ## Differential Testing
 这个比较简单，读懂代码，然后只需要实现ISA-dependent的`isa_difftest_checkregs()`函数
 
 ## 一键回归测试
+最开始测试的时候为了实现不需要键入`c`运行客户程序，我启用了`CONFIG_TARGET_AM`（虽然在menuconfig里提示不要启用这一项），然后测试的时候有一个链接错误。之后我回顾了之前的讲义，发现正确的批处理模式是通过向`parse_args`函数传入`-b`实现的。
+
+接下来做的就是根据报错在`inst.c`中完善指令，我遇到了2个难点：
+
+1. mulh指令，两个32位数相乘，将高32位结果返回给目标寄存器。改了很久一直没找到问题，最后在网上看到了解决办法
+```
+R(rd) = BITS((int64_t)(int32_t)src1 * (int64_t)(int32_t)src2, 63, 32)
+```
+直接用`int64_t`强制转化不行，先要`int32_t`强制转化，原因不是很清楚
+
+2. load类型的指令，lb，lh这种指令要注意把存储器中读出的数进行符号扩展后再加载到目标寄存器中
+
+最后测试结果如下：
+![](https://pic.imgdb.cn/item/66a0b13ad9c307b7e91805b4.png)
