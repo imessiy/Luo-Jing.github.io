@@ -19,6 +19,8 @@ nav:
     - Verilator:  TOOLS/verilator.md
     - Makefile:   TOOLS/makefile.md
     - GDB:        TOOLS/gdb.md
+  - 论文:
+    - CryoCache:  Paper/CryoCache.md
 
 # [UI]
 theme:
