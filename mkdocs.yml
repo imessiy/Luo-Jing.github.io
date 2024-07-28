@@ -20,6 +20,7 @@ nav:
     - Makefile:   TOOLS/makefile.md
     - GDB:        TOOLS/gdb.md
   - 论文:
+    - Paper/paper.md
     - CryoCache:  Paper/CryoCache.md
 
 # [UI]

@@ -41,8 +41,8 @@
 - Setup Time：上升沿来之前被采样信号需要保持不变的最短时间
 - Hold Time：上升沿之后被采样信号需要保持不变的最短时间
 
-当被采样信号没有保持足够的$t_setup$或者$t_hold$时，输出是一种metastable，即亚稳态，亚稳态会经过一段时间$t_{res}$后变成稳定的0或1
+当被采样信号没有保持足够的$t_{setup}$或者$t_{hold}$时，输出是一种metastable，即亚稳态，亚稳态会经过一段时间$t_{res}$后变成稳定的0或1
 
-消除亚稳态可以用如下结构的synchronizer，需要满足$T_c>t_{res}+t_setup$
+消除亚稳态可以用如下结构的synchronizer，需要满足$T_c>t_{res}+t_{setup}$
 
 ![synchronizer](https://pic.imgdb.cn/item/66989e6cd9c307b7e93fcf5e.png)
